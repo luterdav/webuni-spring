@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+table.table2, table.table2 th, table.table2 td{
+  border: 1px solid black;
+}
+</style>
+<head>
+<meta charset="UTF-8">
+<title>HR application</title>
+</head>
+<body>
+	<h1>Update Employee</h1>
+
+	<form th:action="@{/update/{id}(id=${employee.id})}" method="post" th:object="${employee}">
+	<table class="table1" style="width:25%">
+<!-- 		<tr> -->
+<!-- 		<td align="right" class="style1">ID:</td> -->
+<!-- 		<td class="style1"><input th:field="*{id}" /></td> -->
+<!-- 		</tr> -->
+		<tr>
+		<td  align="right" class="style1">NAME:</td>
+		<td class="style1"><input th:field="*{name}" /></td>
+		</tr>
+		<tr>
+		<td  align="right" class="style1">POSITION:</td>
+		<td class="style1"><input th:field="*{position}" /></td>
+		</tr>
+		<tr>
+		<td  align="right" class="style1">SALARY:</td>
+		<td class="style1"><input th:field="*{salary}" /></td>
+		</tr>
+		<tr>
+		<td  align="right" class="style1">JOB START DATE:</td>
+		<td class="style1"><input type="datetime-local" th:field="*{workStarted}" /></td>
+		</tr>
+		<tr>
+		<td align="right"><input type="submit" value="Update Employee"></td>
+	</tr>
+	</table>
+	</form>
+	
+<!-- <br /> -->
+ 
+<!-- 	<table class="table2" style="width:50%"> -->
+<!--   <tr> -->
+<!--     <th>ID</th> -->
+<!--     <th>NAME</th> -->
+<!--     <th>POSITION</th> -->
+<!--     <th>SALARY</th> -->
+<!--     <th>JOB START DATE</th> -->
+<!--   </tr> -->
+<!--   <tr th:each="employee : employees"> -->
+<!--    <td align="center" th:text="${employee.id}">id</td> -->
+<!-- 	<td align="center" th:text="${employee.name}">name</td>  -->
+<!-- 	<td align="center" th:text="${employee.position}">position</td> -->
+<!-- 	<td align="center" th:text="${employee.salary}">salary</td> -->
+<!-- 	<td align="center" th:text="${employee.workStarted}">job start date</td> -->
+<!--   </tr> -->
+<!--   </table> -->
+</body>
+</html>

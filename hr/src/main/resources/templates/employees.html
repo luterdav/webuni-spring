@@ -47,13 +47,20 @@ table.table2, table.table2 th, table.table2 td{
     <th>POSITION</th>
     <th>SALARY</th>
     <th>JOB START DATE</th>
-  </tr>
+    <th>DELETE</th>
+  </tr> 
+
   <tr th:each="employee : ${employees}">
    <td align="center" th:text="${employee.id}">id</td>
-	<td align="center" th:text="${employee.name}">name</td> 
+	<td align="center">
+	   <a th:text="${employee.name}" th:href="@{/update/{id}(id=${employee.id})}" >name</a>
+	</td> 
 	<td align="center" th:text="${employee.position}">position</td>
 	<td align="center" th:text="${employee.salary}">salary</td>
 	<td align="center" th:text="${employee.workStarted}">job start date</td>
+	<td align="center">
+	   <a th:href="@{/delete/{id}(id=${employee.id})}" >Delete</a>
+	</td>
   </tr>
   </table>
 </body>
