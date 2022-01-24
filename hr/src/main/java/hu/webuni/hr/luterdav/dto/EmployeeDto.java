@@ -1,4 +1,4 @@
-package hu.webuni.hr.luterdav.model;
+package hu.webuni.hr.luterdav.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,7 +8,7 @@ import java.time.temporal.ChronoUnit;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class Employee {
+public class EmployeeDto {
 
 	private long id;
 	private String name;
@@ -16,11 +16,10 @@ public class Employee {
 	private int salary;
 	private LocalDateTime workStarted;
 	
-
-	public Employee() {
+	public EmployeeDto() {
 	}
 
-	public Employee(long id, String name, String position, int salary, LocalDateTime workStarted) {
+	public EmployeeDto(long id, String name, String position, int salary, LocalDateTime workStarted) {
 		this.id = id;
 		this.name = name;
 		this.position = position;
@@ -63,19 +62,16 @@ public class Employee {
 	public LocalDateTime getWorkStarted() {
 		return workStarted;
 	}
-	
+
 	public void setWorkStarted(LocalDateTime workStarted) {
 		this.workStarted = workStarted;
 	}
 	
-	public LocalDateTime getWorkStarted(String userInput) {
-	    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	    LocalDateTime date = LocalDateTime.parse(userInput, dateFormat);
-	    return date ;
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", name=" + name + ", title=" + position + ", salary=" + salary + ", workStarted="
+				+ workStarted + "]";
 	}
 
-	public long getWorkTimeInMonths() {
-		return ChronoUnit.MONTHS.between(workStarted, LocalDateTime.now());
-	}
-
+	
 }
