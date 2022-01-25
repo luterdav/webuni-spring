@@ -6,14 +6,23 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Positive;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class EmployeeDto {
 
 	private long id;
+	@NotEmpty
 	private String name;
+	@NotEmpty
 	private String position;
+	@Positive
 	private int salary;
+	@Past
 	private LocalDateTime workStarted;
 	
 	public EmployeeDto() {
