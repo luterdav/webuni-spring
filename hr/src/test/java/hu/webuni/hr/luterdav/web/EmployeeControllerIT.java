@@ -26,7 +26,7 @@ public class EmployeeControllerIT {
 	void testThatValidEmployeeIsCreated() throws Exception{
 		List<EmployeeDto> employeesBefore = getAllEmployees();
 		
-		EmployeeDto newEmployee = new EmployeeDto(1, "Peter Johns", "sales", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10));
+		EmployeeDto newEmployee = new EmployeeDto(3, "Peter Johns", "sales", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10));
 		
 		createValidEmployee(newEmployee);
 		
@@ -45,7 +45,7 @@ public class EmployeeControllerIT {
 	void testThatInvalidEmployeeIsCreated() throws Exception{
 		List<EmployeeDto> employeesBefore = getAllEmployees();
 		
-		EmployeeDto newEmployee = new EmployeeDto(1, "Peter Johns", "", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10));
+		EmployeeDto newEmployee = new EmployeeDto(3, "Peter Johns", "", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10));
 		
 		createInvalidEmployee(newEmployee);
 		
@@ -57,7 +57,7 @@ public class EmployeeControllerIT {
 	
 	@Test
 	void testThatValidEmployeeIsUpdated() throws Exception{
-		EmployeeDto newEmployee = new EmployeeDto(1, "Peter Johns", "sales", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10));
+		EmployeeDto newEmployee = new EmployeeDto(3, "Peter Johns", "sales", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10));
 		EmployeeDto createdEmployee = createEmployeeWithBody(newEmployee); 
 		
 		List<EmployeeDto> employeesBefore = getAllEmployees();
@@ -74,11 +74,11 @@ public class EmployeeControllerIT {
 	
 	@Test
 	void testThatInvalidEmployeeIsUpdated() throws Exception{
-		EmployeeDto newEmployee = new EmployeeDto(1, "Peter Johns", "sales", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10));
+		EmployeeDto newEmployee = new EmployeeDto(3, "Peter Johns", "sales", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10));
 		EmployeeDto createdEmployee = createEmployeeWithBody(newEmployee); 
 		
 		List<EmployeeDto> employeesBefore = getAllEmployees();
-		EmployeeDto newEmployee2 = new EmployeeDto(1, "John Peters", "finance", 200_000, LocalDateTime.of(2021, 10, 10, 10, 10, 10));
+		EmployeeDto newEmployee2 = new EmployeeDto(3, "Peter Johns", "", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10));
 		updateInvalidEmployee(newEmployee2);
 		List<EmployeeDto> employeesAfter = getAllEmployees();
 		
