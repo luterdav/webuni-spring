@@ -3,6 +3,7 @@ package hu.webuni.hr.luterdav.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import hu.webuni.hr.luterdav.dto.EmployeeDto;
 import hu.webuni.hr.luterdav.model.Employee;
@@ -14,6 +15,7 @@ public interface EmployeeMapper {
 	
 	List<Employee> dtosToEmployees (List<EmployeeDto> employees);
 	
+	@Mapping(target = "company.employees", ignore = true)
 	EmployeeDto employeeToDto(Employee employee);
 
 	Employee dtoToEmployee(EmployeeDto employeeDto);

@@ -38,6 +38,7 @@ public class EmployeeControllerIT {
 		
 		assertThat(employeesAfter.get(employeesAfter.size()-1))
 		.usingRecursiveComparison()
+		.ignoringFields("id")
 		.isEqualTo(newEmployee);
 	}
 	

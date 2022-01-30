@@ -6,16 +6,34 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
+@Entity
 public class Employee {
 
+	@Id
+	@GeneratedValue
 	private long id;
 	private String name;
 	private String position;
 	private int salary;
 	private LocalDateTime workStarted;
 	
+    @ManyToOne
+    private Company company;
+    
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
 
 	public Employee() {
 	}

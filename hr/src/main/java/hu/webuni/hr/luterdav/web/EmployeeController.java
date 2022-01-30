@@ -1,16 +1,13 @@
 package hu.webuni.hr.luterdav.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 import hu.webuni.hr.luterdav.dto.EmployeeDto;
 import hu.webuni.hr.luterdav.mapper.EmployeeMapper;
 import hu.webuni.hr.luterdav.model.Employee;
+import hu.webuni.hr.luterdav.repository.EmployeeRepository;
 import hu.webuni.hr.luterdav.service.EmployeeService;
 
 @RestController
@@ -32,30 +30,20 @@ import hu.webuni.hr.luterdav.service.EmployeeService;
 public class EmployeeController {
 
 	@Autowired
-	EmployeeService employeeService;
+	private EmployeeService employeeService;
 
 	@Autowired
 	private EmployeeMapper employeeMapper;
+	
+	@Autowired
+	private EmployeeRepository employeeRepository;
 
-//	private Map<Long, EmployeeDto> employees = new HashMap<>();
-
-	/*
-	 * http://localhost:8080/api/employees?salary=200000
-	 */
 
 	@GetMapping
-	public List<EmployeeDto> getEmployees(
-			@RequestParam(value = "salary", defaultValue = "0", required = false) Integer salary) {
+	public List<EmployeeDto> getEmployees(@RequestParam(value = "salary", defaultValue = "0", required = false) Integer salary) {
 		if (salary != null) {
-//			List<EmployeeDto> list = new ArrayList<>();
-//			for (EmployeeDto employeeDto : employeeMapper.employeesToDtos(employeeService.findAll())) {
-//				if (employeeDto.getSalary() > salary) {
-//					list.add(employeeDto);
-//				}
-//			}
-//			return list;
-			return employeeMapper.employeesToDtos(employeeService.findAll()).stream()
-					.filter(e -> e.getSalary() > salary).collect(Collectors.toList());
+
+			return employeeMapper.employeesToDtos(employeeRepository.findBySalaryGreaterThan(salary));
 
 		}
 		return employeeMapper.employeesToDtos(employeeService.findAll());
@@ -63,10 +51,34 @@ public class EmployeeController {
 
 	@GetMapping("/{id}")
 	public EmployeeDto getEmployeeById(@PathVariable long id) {
-		Employee employee = employeeService.findById(id);
-		if (employee == null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		Employee employee = employeeService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		return employeeMapper.employeeToDto(employee);
+	}
+	
+	@GetMapping("/position")
+	public List<EmployeeDto> getByTitle(@RequestParam(required = false) String name) {
+		if (name != null)
+			return employeeMapper.employeesToDtos(employeeRepository.findByPosition(name));
+		else
+			return employeeMapper.employeesToDtos(employeeService.findAll());
+	}
+	
+	@GetMapping("/employeeName")
+	public List<EmployeeDto> getByName(@RequestParam(required = false) String name) {
+		if (name != null)
+			return employeeMapper.employeesToDtos(employeeRepository.findByNameStartingWithIgnoreCase(name));
+		else
+			return employeeMapper.employeesToDtos(employeeService.findAll());
+	}
+	
+	//http://localhost:8080/api/employees/dateBetween?startDate=2012-01-01 00:00:00&endDate=2016-01-01 00:00:00
+	
+	@GetMapping("/dateBetween")
+	public List<EmployeeDto> getByDateBetween(@RequestParam LocalDateTime startDate, @RequestParam LocalDateTime endDate) {
+		if (startDate != null && endDate != null)
+			return employeeMapper.employeesToDtos(employeeRepository.findByWorkStartedBetween(startDate, endDate));
+		else
+			return employeeMapper.employeesToDtos(employeeService.findAll());
 	}
 
 	@PostMapping("/raise")
@@ -82,12 +94,10 @@ public class EmployeeController {
 
 	@PutMapping("/{id}")
 	public EmployeeDto modifyEmployee(@PathVariable long id, @RequestBody @Valid EmployeeDto employeeDto) {
-		Employee employee = employeeService.findById(id);
-		if (employee == null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		Employee employee = employeeService.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		
 		employee.setId(id);
-		employee = employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
+		employee = employeeService.update(employeeMapper.dtoToEmployee(employeeDto));
 		return employeeMapper.employeeToDto(employee);
 	}
 

@@ -25,6 +25,8 @@ public class EmployeeDto {
 	@Past
 	private LocalDateTime workStarted;
 	
+	private CompanyDto company;
+
 	public EmployeeDto() {
 	}
 
@@ -36,6 +38,13 @@ public class EmployeeDto {
 		this.workStarted = workStarted;
 	}
 	
+	public CompanyDto getCompany() {
+		return company;
+	}
+	
+	public void setCompany(CompanyDto company) {
+		this.company = company;
+	}
 	public long getId() {
 		return id;
 	}

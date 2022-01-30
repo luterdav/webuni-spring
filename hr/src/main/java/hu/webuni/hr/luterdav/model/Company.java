@@ -3,17 +3,25 @@ package hu.webuni.hr.luterdav.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 import com.fasterxml.jackson.annotation.JsonView;
 
-
+@Entity
 public class Company {
 	
+	@Id
+	@GeneratedValue
 	private long id;
 	private int registrationNumber;
 	private String name;
 	private String address;
 	
-	List<Employee> employees = new ArrayList<>();
+	@OneToMany(mappedBy = "company")
+	List<Employee> employees;
 	
 	public Company() {
 		
@@ -65,6 +73,13 @@ public class Company {
 
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
+	}
+	
+	public void addEmployee(Employee employee) {
+		if(this.employees == null)
+			this.employees = new ArrayList<>();
+		this.employees.add(employee);
+		employee.setCompany(this);
 	}
 
 }

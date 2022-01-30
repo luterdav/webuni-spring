@@ -5,38 +5,48 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import hu.webuni.hr.luterdav.model.Employee;
+import hu.webuni.hr.luterdav.repository.EmployeeRepository;
 
-
+@Service
 public abstract class AbstractEmployeeService implements EmployeeService {
 
-	private Map<Long, Employee> employees = new HashMap<>();
 
-	{
-		employees.put(1L, new Employee(1, "John Adams", "accountant", 200_000, LocalDateTime.of(2010, 10, 10, 10, 10, 10)));
-		employees.put(2L, new Employee(2, "Adam Johns", "sales", 300_000, LocalDateTime.of(2020, 10, 10, 10, 10, 10)));
-	}
-	
+	@Autowired
+	EmployeeRepository employeeRepository;
+
 	@Override
 	public Employee save(Employee employee) {
-		employees.put(employee.getId(), employee);
-		return employee;
+		return employeeRepository.save(employee);
 	}
-	
+
 	@Override
-	public List<Employee> findAll(){
-		return new ArrayList<>(employees.values());
+	public Employee update(Employee employee) {
+		if (employeeRepository.existsById(employee.getId()))
+			return employeeRepository.save(employee);
+		else
+			throw new NoSuchElementException();
 	}
-	
+
 	@Override
-	public Employee findById(long id) {
-		return employees.get(id);
+	public List<Employee> findAll() {
+		return employeeRepository.findAll();
 	}
-	
+
+	@Override
+	public Optional<Employee> findById(long id) {
+		return employeeRepository.findById(id);
+	}
+
 	@Override
 	public void delete(long id) {
-		employees.remove(id);
+		employeeRepository.deleteById(id);
 	}
 
 }
