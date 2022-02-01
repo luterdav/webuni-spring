@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -17,13 +18,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Employee {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
-	private String position;
-	private int salary;
+	@ManyToOne
+	private Position position;
+	private double salary;
 	private LocalDateTime workStarted;
-	
     @ManyToOne
     private Company company;
     
@@ -38,14 +39,25 @@ public class Employee {
 	public Employee() {
 	}
 
-	public Employee(long id, String name, String position, int salary, LocalDateTime workStarted) {
+	public Employee(long id, String name, Position position, double salary, LocalDateTime workStarted,
+			Company company) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.position = position;
 		this.salary = salary;
 		this.workStarted = workStarted;
+		this.company = company;
 	}
-	
+
+	public Position getPosition() {
+		return position;
+	}
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -62,19 +74,11 @@ public class Employee {
 		this.name = name;
 	}
 
-	public String getPosition() {
-		return position;
-	}
-
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
-	public int getSalary() {
+	public double getSalary() {
 		return salary;
 	}
 
-	public void setSalary(int salary) {
+	public void setSalary(double salary) {
 		this.salary = salary;
 	}
 
@@ -95,5 +99,6 @@ public class Employee {
 	public long getWorkTimeInMonths() {
 		return ChronoUnit.MONTHS.between(workStarted, LocalDateTime.now());
 	}
+	
 
 }

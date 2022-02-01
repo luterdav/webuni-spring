@@ -21,11 +21,11 @@ public class EmployeeTLController {
 	
 private List<Employee> allEmployees = new ArrayList<>();
 	
-	{
-		allEmployees.add(new Employee(1, "John Adams", "accountant", 200_000, LocalDateTime.of(2027,10,10,10,10,10)));
-		allEmployees.add(new Employee(2, "Adam Johns", "analyst", 300_000, LocalDateTime.of(2020,10,10,10,10,10)));
-		allEmployees.add(new Employee(3, "Peter Falk", "manager", 500_000, LocalDateTime.of(2021,10,10,10,10,10)));
-	}
+//	{
+//		allEmployees.add(new Employee(1, "John Adams", "accountant", 200_000, LocalDateTime.of(2027,10,10,10,10,10)));
+//		allEmployees.add(new Employee(2, "Adam Johns", "analyst", 300_000, LocalDateTime.of(2020,10,10,10,10,10)));
+//		allEmployees.add(new Employee(3, "Peter Falk", "manager", 500_000, LocalDateTime.of(2021,10,10,10,10,10)));
+//	}
 	
 	@GetMapping("/")
 	public String home() {

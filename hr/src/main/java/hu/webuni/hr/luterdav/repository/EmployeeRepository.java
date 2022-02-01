@@ -1,23 +1,19 @@
 package hu.webuni.hr.luterdav.repository;
 
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import hu.webuni.hr.luterdav.model.Employee;
 
+
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-
-//	List<Person>findByLastname(String lastname);
-//	List<Person>findDistinctPeopleByLastnameOrFirstname(String lastname, String firstname);
-	
-	
-//	@Query("SELECT DISTINCT p FROM Person p WHERE p.lastName=:lastnameOR o.firstName=firstName")
-//	List<Person>findByNames(String lastname, StringfirstName);
-	
-//	select * from employee where title = 'manager'
 	
 	List<Employee> findByPosition(String position);
 	
@@ -25,5 +21,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	
 	List<Employee> findByWorkStartedBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-	List<Employee> findBySalaryGreaterThan(Integer salary);
+	List<Employee> findBySalaryGreaterThan(Double salary);
+	
+	List<Employee> findBySalaryGreaterThan(Double salary, Pageable pageable);
+
+	@Query(value = "SELECT p.name AS positionName, AVG(e.salary) AS averageSalary FROM Employee e JOIN Position p on p.id = e.position_id WHERE e.company_id = ?1 GROUP BY p.name ORDER BY averageSalary DESC", nativeQuery = true)
+	List<Object[]> findAverageEmployeeSalary(Long company_id);
+
+	
 }

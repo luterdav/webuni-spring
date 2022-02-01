@@ -1,15 +1,11 @@
 package hu.webuni.hr.luterdav.web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,13 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import hu.webuni.hr.luterdav.dto.CompanyDto;
 import hu.webuni.hr.luterdav.dto.EmployeeDto;
+import hu.webuni.hr.luterdav.dto.View.BaseData;
 import hu.webuni.hr.luterdav.mapper.CompanyMapper;
 import hu.webuni.hr.luterdav.mapper.EmployeeMapper;
+import hu.webuni.hr.luterdav.model.AverageSalary;
 import hu.webuni.hr.luterdav.model.Company;
+import hu.webuni.hr.luterdav.model.Employee;
 import hu.webuni.hr.luterdav.service.CompanyService;
-import hu.webuni.hr.luterdav.service.EmployeeService;
+import hu.webuni.hr.luterdav.service.PositionService;
 
 @RestController
 @RequestMapping("/api/companies")
@@ -39,10 +40,12 @@ public class CompanyController {
 	private CompanyMapper companyMapper;
 	@Autowired
 	private EmployeeMapper employeeMapper;
+	@Autowired
+	private PositionService positionService;
 
 
 	@GetMapping
-	public List<CompanyDto> getAll(@RequestParam(required = false) Boolean full) {
+	public List<CompanyDto> getAllCompanies(@RequestParam(required = false) Boolean full) {
 		List<Company> companies = companyService.findAll();
 		
 		if (isFull(full)) {
@@ -64,6 +67,39 @@ public class CompanyController {
 			return companyMapper.companyToDto(company);
 		else
 			return companyMapper.companyToSummaryDto(company);
+	}
+	
+	@GetMapping("/test1")
+	public List<CompanyDto> getCompaniesBySalary(@RequestParam(required = false) Double salary) {
+		if (salary != null) {
+			return companyMapper.companiesToDtos(companyService.findCompaniesBySalary(salary));
+		}else {
+			return companyMapper.companiesToDtos(companyService.findAll());
+		}
+	}
+	
+	@GetMapping("/test2")
+	public List<CompanyDto> getCompaniesByEmployeeLimit(@RequestParam(required = false) Integer limit) {
+		if (limit != null) {
+			return companyMapper.companiesToDtos(companyService.findCompaniesByEmployeeLimit(limit));
+		}else {
+			return companyMapper.companiesToDtos(companyService.findAll());
+		}
+	}
+	
+	@GetMapping("/{id}/averageSalary")
+	public List<AverageSalary> getAverageEmployeeSalary(@PathVariable long id) {
+		List<AverageSalary> employees = new ArrayList<>();
+		List<Object[]> averageSalaries = companyService.findAverageEmployeeSalaryByCompany(id);
+		
+		averageSalaries.forEach(a -> {
+			AverageSalary e = new AverageSalary();
+			e.setPositionName(a[0]+"");
+			e.setAverageSalary((double)a[1]);
+			employees.add(e);
+		});
+		
+		return employees;
 	}
 
 	@PostMapping

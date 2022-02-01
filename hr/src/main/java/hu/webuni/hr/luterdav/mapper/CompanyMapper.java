@@ -9,8 +9,10 @@ import org.mapstruct.Named;
 
 import hu.webuni.hr.luterdav.dto.CompanyDto;
 import hu.webuni.hr.luterdav.dto.EmployeeDto;
+import hu.webuni.hr.luterdav.dto.PositionDto;
 import hu.webuni.hr.luterdav.model.Company;
 import hu.webuni.hr.luterdav.model.Employee;
+import hu.webuni.hr.luterdav.model.Position;
 
 @Mapper(componentModel = "spring")
 public interface CompanyMapper {
@@ -26,6 +28,11 @@ public interface CompanyMapper {
 	EmployeeDto employeeToDto(Employee employee);
 	
 	Employee dtoToEmployee(EmployeeDto employeeDto);
+	
+//	@Mapping(target = "companies", ignore = true)
+	PositionDto positionToDto(Position position);
+	
+	Position dtoToPosition(PositionDto positionDto);
 	
 	@Mapping(target = "employees", ignore = true)
 	@Named("summary")

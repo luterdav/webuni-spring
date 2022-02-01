@@ -13,15 +13,20 @@ import javax.validation.constraints.Positive;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import hu.webuni.hr.luterdav.dto.View.BaseData;
+
 public class EmployeeDto {
 
 	private long id;
 	@NotEmpty
 	private String name;
-	@NotEmpty
-	private String position;
+	@JsonView(BaseData.class)
+	private PositionDto position;
 	@Positive
-	private int salary;
+	@JsonView(BaseData.class)
+	private double salary;
 	@Past
 	private LocalDateTime workStarted;
 	
@@ -30,14 +35,25 @@ public class EmployeeDto {
 	public EmployeeDto() {
 	}
 
-	public EmployeeDto(long id, String name, String position, int salary, LocalDateTime workStarted) {
+	public EmployeeDto(long id, @NotEmpty String name, PositionDto position, @Positive double salary,
+			@Past LocalDateTime workStarted, CompanyDto company) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.position = position;
 		this.salary = salary;
 		this.workStarted = workStarted;
+		this.company = company;
 	}
-	
+
+	public PositionDto getPosition() {
+		return position;
+	}
+
+	public void setPosition(PositionDto position) {
+		this.position = position;
+	}
+
 	public CompanyDto getCompany() {
 		return company;
 	}
@@ -61,19 +77,11 @@ public class EmployeeDto {
 		this.name = name;
 	}
 
-	public String getPosition() {
-		return position;
-	}
-
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
-	public int getSalary() {
+	public double getSalary() {
 		return salary;
 	}
 
-	public void setSalary(int salary) {
+	public void setSalary(double salary) {
 		this.salary = salary;
 	}
 
