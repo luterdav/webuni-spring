@@ -67,7 +67,8 @@ public class PositionService {
 		position.setMinSalary(newMinSalary);
 		positionRepository.save(position);
 
-		employees.forEach(e -> {
+		employees.stream().filter(e -> e.getPosition().equals(position))
+		.forEach(e -> {
 			if (e.getSalary() < newMinSalary)
 				e.setSalary(newMinSalary);
 			employeeRepository.save(e);
