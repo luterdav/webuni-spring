@@ -8,6 +8,8 @@ import java.util.OptionalDouble;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ public class CompanyService {
 	
 	@Autowired
 	EmployeeRepository employeeRepository;
+	
 	
 	public Company save(Company company) {
 		return companyRepository.save(company);
@@ -48,13 +51,19 @@ public class CompanyService {
 		companyRepository.deleteById(id);
 	}
 	
+	public void deleteAll() {
+		companyRepository.deleteAll();
+	}
+	
+	@Transactional
 	public Company addEmployee(long id, Employee employee) {
 		Company company = companyRepository.findById(id).get();
-		company.addEmployee(employee);
 		employeeRepository.save(employee);
+		company.addEmployee(employee);
 		return company;
 	}
 	
+	@Transactional
 	public Company deleteEmployee(long id, long employeeId) {
 		Company company = companyRepository.findById(id).get();
 		Employee employee = employeeRepository.findById(employeeId).get();
@@ -64,6 +73,7 @@ public class CompanyService {
 		return company;
 	}
 	
+	@Transactional
 	public Company replaceEmployees(long id, List<Employee> employees) {
 		Company company = companyRepository.findById(id).get();
 		company.getEmployees().forEach(e -> e.setCompany(null));
@@ -76,27 +86,6 @@ public class CompanyService {
 		
 		return company;
 	}
-	
-	public List<Company> findCompaniesBySalary(Double salary){
-		//List<Company> companies = new ArrayList<>();
-		List<Employee> employees = employeeRepository.findBySalaryGreaterThan(salary);
-		//employees.forEach(e -> companies.add(e.getCompany()));
-		
-		return employees.stream().map(e -> e.getCompany()).distinct().collect(Collectors.toList());
-	}
-	
-	public List<Company> findCompaniesByEmployeeLimit(Integer limit){
-		List<Company> companies = companyRepository.findAll();
-		
-		return companies.stream().filter(c -> c.getEmployees().size() > limit).collect(Collectors.toList());
-	}
-	
-	public List<Object[]> findAverageEmployeeSalaryByCompany(long id){
-		
-		return employeeRepository.findAverageEmployeeSalary(id);
-		
-	}
-	
 	
 }
 	

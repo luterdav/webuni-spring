@@ -11,21 +11,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 public class Employee {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private long id;
 	private String name;
+	
 	@ManyToOne
 	private Position position;
-	private double salary;
+	
+	private int salary;
 	private LocalDateTime workStarted;
-    @ManyToOne
+    
+	@ManyToOne
     private Company company;
     
 	public Company getCompany() {
@@ -38,8 +44,27 @@ public class Employee {
 
 	public Employee() {
 	}
+	
+	
 
-	public Employee(long id, String name, Position position, double salary, LocalDateTime workStarted,
+	public Employee(String name, Position position, int salary, LocalDateTime workStarted) {
+		super();
+		this.name = name;
+		this.position = position;
+		this.salary = salary;
+		this.workStarted = workStarted;
+	}
+
+	public Employee(String name, Position position, int salary, LocalDateTime workStarted, Company company) {
+		super();
+		this.name = name;
+		this.position = position;
+		this.salary = salary;
+		this.workStarted = workStarted;
+		this.company = company;
+	}
+
+	public Employee(long id, String name, Position position, int salary, LocalDateTime workStarted,
 			Company company) {
 		super();
 		this.id = id;
@@ -74,11 +99,11 @@ public class Employee {
 		this.name = name;
 	}
 
-	public double getSalary() {
+	public int getSalary() {
 		return salary;
 	}
 
-	public void setSalary(double salary) {
+	public void setSalary(int salary) {
 		this.salary = salary;
 	}
 

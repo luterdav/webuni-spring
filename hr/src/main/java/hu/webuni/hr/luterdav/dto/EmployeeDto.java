@@ -22,11 +22,9 @@ public class EmployeeDto {
 	private long id;
 	@NotEmpty
 	private String name;
-	@JsonView(BaseData.class)
-	private PositionDto position;
+	private String position;
 	@Positive
-	@JsonView(BaseData.class)
-	private double salary;
+	private int salary;
 	@Past
 	private LocalDateTime workStarted;
 	
@@ -35,7 +33,7 @@ public class EmployeeDto {
 	public EmployeeDto() {
 	}
 
-	public EmployeeDto(long id, @NotEmpty String name, PositionDto position, @Positive double salary,
+	public EmployeeDto(long id, @NotEmpty String name, String position, @Positive int salary,
 			@Past LocalDateTime workStarted, CompanyDto company) {
 		super();
 		this.id = id;
@@ -46,11 +44,11 @@ public class EmployeeDto {
 		this.company = company;
 	}
 
-	public PositionDto getPosition() {
+	public String getPosition() {
 		return position;
 	}
 
-	public void setPosition(PositionDto position) {
+	public void setPosition(String position) {
 		this.position = position;
 	}
 
@@ -77,11 +75,11 @@ public class EmployeeDto {
 		this.name = name;
 	}
 
-	public double getSalary() {
+	public int getSalary() {
 		return salary;
 	}
 
-	public void setSalary(double salary) {
+	public void setSalary(int salary) {
 		this.salary = salary;
 	}
 

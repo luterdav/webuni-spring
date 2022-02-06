@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
@@ -76,7 +77,7 @@ public class EmployeeController {
 	@GetMapping("/position")
 	public List<EmployeeDto> getByTitle(@RequestParam(required = false) String name) {
 		if (name != null)
-			return employeeMapper.employeesToDtos(employeeRepository.findByPosition(name));
+			return employeeMapper.employeesToDtos(employeeRepository.findByPositionName(name));
 		else
 			return employeeMapper.employeesToDtos(employeeService.findAll());
 	}
@@ -100,6 +101,12 @@ public class EmployeeController {
 		else
 			return employeeMapper.employeesToDtos(employeeService.findAll());
 	}
+	
+	@GetMapping("/example")
+	public List<EmployeeDto> findEmployeesByDynamicSearch(@RequestBody Employee employee) {
+		List<Employee> employees = employeeService.findEmployeesByExample(employee);
+		return employeeMapper.employeesToDtos(employees);
+	}
 
 	@PostMapping("/raise")
 	public int getEmployeeRaise(@RequestBody Employee employee) {
@@ -111,15 +118,24 @@ public class EmployeeController {
 		Employee employee = employeeService.save(employeeMapper.dtoToEmployee(employeeDto));
 		return employeeMapper.employeeToDto(employee);
 	}
+	
+	
 
 	@PutMapping("/{id}")
 	public EmployeeDto modifyEmployee(@PathVariable long id, @RequestBody @Valid EmployeeDto employeeDto) {
-		Employee employee = employeeService.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-		employee.setId(id);
-		employee = employeeService.update(employeeMapper.dtoToEmployee(employeeDto));
-		return employeeMapper.employeeToDto(employee);
+//		Employee employee = employeeService.findById(id)
+//				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//
+//		employee.setId(id);
+//		employee = employeeService.update(employeeMapper.dtoToEmployee(employeeDto));
+//		return employeeMapper.employeeToDto(employee);
+		
+		Employee employee = employeeService.update(id, employeeMapper.dtoToEmployee(employeeDto));
+		try {
+			return employeeMapper.employeeToDto(employee);
+		} catch (NoSuchElementException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@DeleteMapping("/{id}")

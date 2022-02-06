@@ -8,52 +8,90 @@ import java.util.Set;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 
+@NamedEntityGraph(
+		name = "Company.full",
+        attributeNodes = {
+        		@NamedAttributeNode("employees"),
+        		@NamedAttributeNode("companyType")
+        }
+)
 @Entity
 public class Company {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private long id;
 	private int registrationNumber;
 	private String name;
 	private String address;
-	@ElementCollection
-	@CollectionTable(name="type")
-	private Set<CompanyType> companyType;
-	@OneToMany(mappedBy = "company")
+	
+	@ManyToOne
+	private CompanyType companyType;
+	
+	@OneToMany(mappedBy = "company", fetch = FetchType.EAGER)
 	private List<Employee> employees;
-//	@ManyToMany
-//    @JoinTable(name="company_position")
-//	private List<Position> positions;
+
 	
 	public Company() {
 		
 	}
+	
 
-	public Company(long id, int registrationNumber, String name, String address, Set<CompanyType> companyType,
-		List<Employee> employees) {
-	super();
-	this.id = id;
-	this.registrationNumber = registrationNumber;
-	this.name = name;
-	this.address = address;
-	this.companyType = companyType;
-	this.employees = employees;
-}
+	public Company(int registrationNumber, String name) {
+		super();
+		this.registrationNumber = registrationNumber;
+		this.name = name;
+	}
 
-	public Set<CompanyType> getCompanyType() {
+
+	public Company(int registrationNumber, String name, String address, CompanyType companyType) {
+		super();
+		this.registrationNumber = registrationNumber;
+		this.name = name;
+		this.address = address;
+		this.companyType = companyType;
+	}
+
+
+	public Company(int registrationNumber, String name, String address, CompanyType companyType,
+			List<Employee> employees) {
+		super();
+		this.registrationNumber = registrationNumber;
+		this.name = name;
+		this.address = address;
+		this.companyType = companyType;
+		this.employees = employees;
+	}
+
+
+
+	public Company(long id, int registrationNumber, String name, String address, CompanyType companyType,
+			List<Employee> employees) {
+		super();
+		this.id = id;
+		this.registrationNumber = registrationNumber;
+		this.name = name;
+		this.address = address;
+		this.companyType = companyType;
+		this.employees = employees;
+	}
+
+	public CompanyType getCompanyType() {
 		return companyType;
 	}
 
-	public void setCompanyType(Set<CompanyType> companyType) {
+	public void setCompanyType(CompanyType companyType) {
 		this.companyType = companyType;
 	}
 

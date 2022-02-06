@@ -1,9 +1,8 @@
 package hu.webuni.hr.luterdav.service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +11,11 @@ import hu.webuni.hr.luterdav.model.Company;
 import hu.webuni.hr.luterdav.model.CompanyType;
 import hu.webuni.hr.luterdav.model.Employee;
 import hu.webuni.hr.luterdav.model.Position;
+import hu.webuni.hr.luterdav.model.PositionDetailsByCompany;
 import hu.webuni.hr.luterdav.repository.CompanyRepository;
+import hu.webuni.hr.luterdav.repository.CompanyTypeRepository;
 import hu.webuni.hr.luterdav.repository.EmployeeRepository;
+import hu.webuni.hr.luterdav.repository.PositionDetailsByCompanyRespository;
 import hu.webuni.hr.luterdav.repository.PositionRepository;
 
 @Service
@@ -25,6 +27,10 @@ public class InitDbService {
 	EmployeeRepository employeeRepository;
 	@Autowired
 	PositionRepository positionRepository;
+	@Autowired
+	CompanyTypeRepository companyTypeRepository;
+	@Autowired
+	PositionDetailsByCompanyRespository positionDetailsByCompanyRespository;
 	
 	public void clearDB() {
 		employeeRepository.deleteAll();
@@ -32,7 +38,17 @@ public class InitDbService {
 		companyRepository.deleteAll();
 	}
 	
+	@Transactional
 	public void insertTestData(){
+		
+		//COMPANYTYPE
+		
+		CompanyType companytype1 = new CompanyType("Kft");
+		CompanyType companytype2 = new CompanyType("Nyrt");
+		CompanyType companytype3 = new CompanyType("Zrt");
+		companyTypeRepository.save(companytype1);
+		companyTypeRepository.save(companytype2);
+		companyTypeRepository.save(companytype3);
 		
 		//COMPANIES
 		
@@ -40,27 +56,21 @@ public class InitDbService {
 		testCompany1.setRegistrationNumber(1111);
 		testCompany1.setName("Apple");
 		testCompany1.setAddress("USA");
-		testCompany1.setCompanyType(Stream.of(CompanyType.KFT)
-				  .collect(Collectors.toCollection(HashSet::new)));
-//		testCompany1.setCompanyType(CompanyType.KFT);
+		testCompany1.setCompanyType(companytype1);
 		companyRepository.save(testCompany1);
 		
 		Company testCompany2 = new Company();
 		testCompany2.setRegistrationNumber(2222);
 		testCompany2.setName("Tesla");
 		testCompany2.setAddress("USA");
-		testCompany2.setCompanyType(Stream.of(CompanyType.NYRT)
-				  .collect(Collectors.toCollection(HashSet::new)));
-//		testCompany2.setCompanyType(CompanyType.NYRT);
+		testCompany1.setCompanyType(companytype2);
 		companyRepository.save(testCompany2);
 		
 		Company testCompany3 = new Company();
 		testCompany3.setRegistrationNumber(3333);
 		testCompany3.setName("Amazon");
 		testCompany3.setAddress("USA");
-		testCompany3.setCompanyType(Stream.of(CompanyType.ZRT)
-				  .collect(Collectors.toCollection(HashSet::new)));
-//		testCompany3.setCompanyType(CompanyType.ZRT);
+		testCompany1.setCompanyType(companytype3);
 		companyRepository.save(testCompany3);
 		
 		//POSITIONS
@@ -68,32 +78,47 @@ public class InitDbService {
 		Position testPosition1 = new Position();
 		testPosition1.setName("Sales Manager");
 		testPosition1.setEducation("University");
-		testPosition1.setMinSalary(600_000);
 		positionRepository.save(testPosition1);
 		
 		Position testPosition2 = new Position();
 		testPosition2.setName("Business Analyst");
 		testPosition2.setEducation("University");
-		testPosition2.setMinSalary(400_000);
 		positionRepository.save(testPosition2);
 		
 		Position testPosition3 = new Position();
 		testPosition3.setName("Finance Manager");
 		testPosition3.setEducation("University");
-		testPosition3.setMinSalary(650_000);
 		positionRepository.save(testPosition3);
 		
 		Position testPosition4 = new Position();
 		testPosition4.setName("Accountant");
 		testPosition4.setEducation("College");
-		testPosition4.setMinSalary(300_000);
 		positionRepository.save(testPosition4);
 		
 		Position testPosition5 = new Position();
 		testPosition5.setName("Customer Service");
 		testPosition5.setEducation("High School");
-		testPosition5.setMinSalary(250_000);
 		positionRepository.save(testPosition5);
+		
+		//POSITION DETAILS
+		
+		PositionDetailsByCompany pd1 = new PositionDetailsByCompany();
+		pd1.setCompany(testCompany1);
+		pd1.setMinSalary(250000);
+		pd1.setPosition(testPosition4);
+		positionDetailsByCompanyRespository.save(pd1);
+		
+		PositionDetailsByCompany pd2 = new PositionDetailsByCompany();
+		pd2.setCompany(testCompany2);
+		pd2.setMinSalary(400000);
+		pd2.setPosition(testPosition2);
+		positionDetailsByCompanyRespository.save(pd2);
+		
+		PositionDetailsByCompany pd3 = new PositionDetailsByCompany();
+		pd3.setCompany(testCompany3);
+		pd3.setMinSalary(600000);
+		pd3.setPosition(testPosition1);
+		positionDetailsByCompanyRespository.save(pd3);
 		
 		//EMPLOYEES
 		

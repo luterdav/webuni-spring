@@ -8,16 +8,22 @@ import hu.webuni.hr.luterdav.model.Employee;
 
 public interface EmployeeService {
 	
-	public int getPayRaisePercent(Employee employee);
+	int getPayRaisePercent(Employee employee);
 	
-	public Employee save(Employee employee);
+	Employee save(Employee employee);
 	
-	public Employee update(Employee employee);
+	Employee update(Employee employee);
 	
-	public List<Employee> findAll();
+	Employee update(Long id, Employee employee);
 	
-	public Optional<Employee> findById(long id);
+	List<Employee> findAll();
 	
-	public void delete(long id);
+	Optional<Employee> findById(long id);
+	
+	void delete(long id);
+	
+	void deleteAll();
+	
+	List<Employee> findEmployeesByExample(Employee example);
 
 }

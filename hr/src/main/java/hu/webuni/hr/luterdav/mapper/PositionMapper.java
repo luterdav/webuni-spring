@@ -2,6 +2,7 @@ package hu.webuni.hr.luterdav.mapper;
 
 import java.util.List;
 
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,8 +24,12 @@ public interface PositionMapper {
 	PositionDto positionToDto(Position position);
 	
 	@Mapping(target = "position", ignore = true)
+	@Mapping(target = "company.companyType", ignore = true)
 	EmployeeDto employeeToDto(Employee employee);
 	
+	@InheritInverseConfiguration
+	@Mapping(target = "position", ignore = true)
+	@Mapping(target = "company.companyType", ignore = true)
 	Employee dtoToEmployee(EmployeeDto employeeDto);
 	
 //	@Mapping(target = "employees", ignore = true)

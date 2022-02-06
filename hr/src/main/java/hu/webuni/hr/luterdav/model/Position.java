@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,26 +18,41 @@ import org.springframework.lang.Nullable;
 public class Position {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue
 	private long id;
 	@Column(unique = true)
 	private String name;
 	@Nullable
 	private String education;
-	private double minSalary;
-//	@ManyToMany(mappedBy = "positions")
-//	List<Company> companies;
+//	private int minSalary;
+	
+	@OneToMany(mappedBy = "position")
+	private List<Employee> employees;
 	
 	public Position() {
 	}
 
-	public Position(long id, String name, String education, double minSalary) {
-	super();
-	this.id = id;
-	this.name = name;
-	this.education = education;
-	this.minSalary = minSalary;
-}
+	public Position(String name, String education) {
+		super();
+		this.name = name;
+		this.education = education;
+	}
+
+	public Position(long id, String name, String education, List<Employee> employees) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.education = education;
+		this.employees = employees;
+	}
+
+	public List<Employee> getEmployees() {
+		return employees;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+	}
 
 	public long getId() {
 		return id;
@@ -56,12 +72,7 @@ public class Position {
 	public void setEducation(String education) {
 		this.education = education;
 	}
-	public double getMinSalary() {
-		return minSalary;
-	}
-	public void setMinSalary(double minSalary) {
-		this.minSalary = minSalary;
-	}
+
 	
 	
 	
