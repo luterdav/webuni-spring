@@ -26,7 +26,7 @@ public class Position {
 	private String education;
 //	private int minSalary;
 	
-	@OneToMany(mappedBy = "position")
+	@OneToMany(mappedBy = "position", fetch = FetchType.EAGER)
 	private List<Employee> employees;
 	
 	public Position() {

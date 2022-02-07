@@ -8,7 +8,6 @@ import hu.webuni.hr.luterdav.model.Position;
 
 public interface PositionRepository extends JpaRepository<Position, Long>{
 	
-	//List<Company> countBySalaryGreaterThan(Integer salary);
 	
 	public List<Position> findByName(String name);
 

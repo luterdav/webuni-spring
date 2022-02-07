@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import hu.webuni.hr.luterdav.model.Company;
 import hu.webuni.hr.luterdav.model.CompanyType;
 import hu.webuni.hr.luterdav.model.Employee;
+import hu.webuni.hr.luterdav.model.Holiday;
 import hu.webuni.hr.luterdav.model.Position;
 import hu.webuni.hr.luterdav.model.PositionDetailsByCompany;
 import hu.webuni.hr.luterdav.repository.CompanyRepository;
@@ -31,6 +32,8 @@ public class InitDbService {
 	CompanyTypeRepository companyTypeRepository;
 	@Autowired
 	PositionDetailsByCompanyRespository positionDetailsByCompanyRespository;
+	@Autowired
+	HolidayService holidayService;
 	
 	public void clearDB() {
 		employeeRepository.deleteAll();
@@ -194,6 +197,39 @@ public class InitDbService {
 		testEmployee9.setCompany(testCompany3);
 		employeeRepository.save(testEmployee9);
 		
+		//HOLIDAY
+		
+		Holiday testHoliday1 = new Holiday();
+		testHoliday1.setStartOfHoliday(LocalDateTime.of(2020, 1, 2, 0, 0, 0));
+		testHoliday1.setEndOfHoliday(LocalDateTime.of(2020, 1, 8, 0, 0, 0));
+        testHoliday1.setHolidayCreatedBy(testEmployee1);
+        testHoliday1.setDateOfHolidayRequested(LocalDateTime.of(2020, 1, 1, 0, 0, 0));
+        testHoliday1.setStatus("Declined");
+        holidayService.save(testHoliday1);
+      
+        Holiday testHoliday2 = new Holiday();
+        testHoliday2.setStartOfHoliday(LocalDateTime.of(2022, 3, 2, 0, 0, 0));
+        testHoliday2.setEndOfHoliday(LocalDateTime.of(2022, 3, 8, 0, 0, 0));
+        testHoliday2.setHolidayCreatedBy(testEmployee2);
+        testHoliday2.setDateOfHolidayRequested(LocalDateTime.of(2022, 2, 2, 0, 0, 0));
+        testHoliday2.setStatus("Waiting for approval");
+        holidayService.save(testHoliday2);
+        
+        Holiday testHoliday3 = new Holiday();
+        testHoliday3.setStartOfHoliday(LocalDateTime.of(2022, 4, 2, 0, 0, 0));
+        testHoliday3.setEndOfHoliday(LocalDateTime.of(2022, 4, 8, 0, 0, 0));
+        testHoliday3.setHolidayCreatedBy(testEmployee3);
+        testHoliday3.setDateOfHolidayRequested(LocalDateTime.of(2022, 3, 2, 0, 0, 0));
+        testHoliday3.setStatus("Waiting for approval");
+        holidayService.save(testHoliday3);
+        
+        Holiday testHoliday4 = new Holiday();
+        testHoliday4.setStartOfHoliday(LocalDateTime.of(2022, 3, 10, 0, 0, 0));
+        testHoliday4.setEndOfHoliday(LocalDateTime.of(2022, 3, 18, 0, 0, 0));
+        testHoliday4.setHolidayCreatedBy(testEmployee3);
+        testHoliday4.setDateOfHolidayRequested(LocalDateTime.of(2022, 1,30, 0, 0, 0));
+        testHoliday4.setStatus("Approved");
+        holidayService.save(testHoliday4);
 	}
 
 }

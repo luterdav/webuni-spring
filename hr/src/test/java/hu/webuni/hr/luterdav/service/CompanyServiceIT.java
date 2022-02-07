@@ -133,41 +133,6 @@ public class CompanyServiceIT {
 		
 	}
 
-//	private ResponseSpec modifyEmployee(EmployeeDto newEmployee) {
-//		String path = BASE_URI + "/" + newEmployee.getId();
-//		return webTestClient
-//				.put()
-//				.uri(path)
-////				.headers(headers -> headers.setBasicAuth(username, pass))
-//				.headers(headers -> headers.setBearerAuth(jwt))
-//				.bodyValue(newEmployee)
-//				.exchange();
-//	}
-//	
-//	private ResponseSpec saveEmployee(EmployeeDto newEmployee) {
-//		return webTestClient
-//				.post()
-//				.uri(BASE_URI)
-////				.headers(headers -> headers.setBasicAuth(username, pass))
-//				.headers(headers -> headers.setBearerAuth(jwt))
-//				.bodyValue(newEmployee)
-//				.exchange();
-//	}
-//
-//	private List<EmployeeDto> getAllEmployees() {
-//		List<EmployeeDto> responseList = webTestClient
-//				.get()
-//				.uri(BASE_URI)
-////				.headers(headers -> headers.setBasicAuth(username, pass))
-//				.headers(headers -> headers.setBearerAuth(jwt))
-//				.exchange()
-//				.expectStatus()
-//				.isOk()
-//				.expectBodyList(EmployeeDto.class)
-//				.returnResult()
-//				.getResponseBody();
-//		Collections.sort(responseList, Comparator.comparing(EmployeeDto::getId));
-//		return responseList;
-//	}
+
 
 }

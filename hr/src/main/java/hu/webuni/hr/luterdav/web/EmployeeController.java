@@ -55,7 +55,7 @@ public class EmployeeController {
 //	}
 
 	@GetMapping
-	public List<EmployeeDto> getEmployees(@RequestParam(required = false) Double salary,
+	public List<EmployeeDto> getEmployees(@RequestParam(required = false) Integer salary,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size) {
 
 		Pageable paging = PageRequest.of(page, size);

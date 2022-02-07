@@ -24,12 +24,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSp
 	
 	List<Employee> findByWorkStartedBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-	List<Employee> findBySalaryGreaterThan(Double salary);
+	List<Employee> findBySalaryGreaterThan(Integer salary);
 	
-	List<Employee> findBySalaryGreaterThan(Double salary, Pageable pageable);
+	List<Employee> findBySalaryGreaterThan(Integer salary, Pageable pageable);
 
-//	@Query(value = "SELECT p.name AS positionName, AVG(e.salary) AS averageSalary FROM Employee e JOIN Position p on p.id = e.position_id WHERE e.company_id = ?1 GROUP BY p.name ORDER BY averageSalary DESC", nativeQuery = true)
-//	List<Object[]> findAverageEmployeeSalary(Long company_id);
+
 
 	
 }
