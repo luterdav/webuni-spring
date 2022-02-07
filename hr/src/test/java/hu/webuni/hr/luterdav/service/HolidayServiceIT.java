@@ -25,6 +25,7 @@ import hu.webuni.hr.luterdav.model.Company;
 import hu.webuni.hr.luterdav.model.Employee;
 import hu.webuni.hr.luterdav.model.Holiday;
 import hu.webuni.hr.luterdav.model.Position;
+import hu.webuni.hr.luterdav.repository.PositionDetailsByCompanyRespository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -40,15 +41,17 @@ public class HolidayServiceIT {
 	@Autowired
 	HolidayService holidayService;
 	@Autowired
+	PositionDetailsByCompanyRespository positionDetailsByCompanyRespository;
+	@Autowired
 	HolidayMapper holidayMapper;
 
 	private static final String BASE_URI = "/api/holidays";
 
 	@BeforeEach
 	public void init() {
+		holidayService.deleteAll();
 		employeeService.deleteAll();
 		positionService.deleteAll();
-		holidayService.deleteAll();
 	}
 
 	
