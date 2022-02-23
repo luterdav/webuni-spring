@@ -7,7 +7,7 @@ import hu.webuni.hr.luterdav.config.HrConfigProperties;
 import hu.webuni.hr.luterdav.model.Employee;
 
 @Service
-public class SmartEmployeeService implements EmployeeService {
+public class SmartEmployeeService extends AbstractEmployeeService {
 
 	@Autowired
 	HrConfigProperties config;
