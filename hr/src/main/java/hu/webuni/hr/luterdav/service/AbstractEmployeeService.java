@@ -51,6 +51,7 @@ public abstract class AbstractEmployeeService implements EmployeeService {
 		Employee employeeOld = employeeRepository.findById(id).get();
 		if (employeeRepository.existsById(employee.getId())) {
 			employeeOld.setId(id);
+			positionService.setPositionForEmployee(employee);
 			return employeeRepository.save(employee);
 		}else
 			throw new NoSuchElementException();

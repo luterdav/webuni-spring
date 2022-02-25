@@ -24,6 +24,7 @@ public class EmployeeDto {
 	private long id;
 	@NotEmpty
 	private String name;
+	@NotEmpty
 	private String position;
 	@Positive
 	private int salary;
@@ -34,6 +35,20 @@ public class EmployeeDto {
 	
 	public EmployeeDto() {
 	}
+	
+	
+
+	public EmployeeDto(long id, @NotEmpty String name, String position, @Positive int salary,
+			@Past LocalDateTime workStarted) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.position = position;
+		this.salary = salary;
+		this.workStarted = workStarted;
+	}
+
+
 
 	public EmployeeDto(long id, @NotEmpty String name, String position, @Positive int salary,
 			@Past LocalDateTime workStarted, CompanyDto company) {

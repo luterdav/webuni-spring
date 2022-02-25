@@ -40,22 +40,16 @@ public class Employee {
 	private Employee manager;
 	
     @OneToMany(mappedBy = "manager")
-	private List<Employee> employees;
-    
-	public Company getCompany() {
-		return company;
-	}
-
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+	private List<Employee> employeesManaged;
+   
 
 	public Employee() {
 	}
 
 
+
 	public Employee(long id, String name, String username, String password, Position position, int salary,
-			LocalDateTime workStarted, Company company, Employee manager, List<Employee> employees) {
+			LocalDateTime workStarted, Company company, Employee manager, List<Employee> employeesManaged) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -66,8 +60,34 @@ public class Employee {
 		this.workStarted = workStarted;
 		this.company = company;
 		this.manager = manager;
-		this.employees = employees;
+		this.employeesManaged = employeesManaged;
 	}
+
+
+
+	public Company getCompany() {
+		return company;
+	}
+
+
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+
+
+	public List<Employee> getEmployeesManaged() {
+		return employeesManaged;
+	}
+
+
+
+	public void setEmployeesManaged(List<Employee> employeesManaged) {
+		this.employeesManaged = employeesManaged;
+	}
+
+
 
 	public String getUsername() {
 		return username;

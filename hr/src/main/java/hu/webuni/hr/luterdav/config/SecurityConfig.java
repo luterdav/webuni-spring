@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import hu.webuni.hr.luterdav.security.JwtAuthFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //
 	@Autowired
 	UserDetailsService userDetailsService;
+	
+	@Autowired
+	JwtAuthFilter jwtAuthFilter;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -37,8 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.httpBasic()
-		.and()
+//		.httpBasic()
+//		.and()
 		.csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
@@ -47,6 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		//.antMatchers(HttpMethod.POST, "/api/holidays/**").hasAuthority("manager")
 		//.antMatchers(HttpMethod.PUT, "/api/holidays/**").hasAnyAuthority("manager", "employee")
 		.anyRequest().authenticated();
+		
+		http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+		
 	}
 	
 	@Bean
@@ -55,6 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		daoAuthenticationProvider.setUserDetailsService(userDetailsService);
 		return daoAuthenticationProvider;
+	}
+	
+	@Override
+	@Bean
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
 	}
 
 }
