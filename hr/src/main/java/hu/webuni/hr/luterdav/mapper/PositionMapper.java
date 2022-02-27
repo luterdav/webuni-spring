@@ -17,22 +17,13 @@ public interface PositionMapper {
 
 	List<PositionDto> positionsToDtos(List<Position> positions);
 
-//	@IterableMapping(qualifiedByName = "summary")
-//	List<PositionDto> positionsToSummaryDtos(List<Position> positions);
+	List<Position> dtosToPositions(List<PositionDto> positions);
 
 	PositionDto positionToDto(Position position);
-	
-	@Mapping(target = "position", ignore = true)
-	EmployeeDto employeeToDto(Employee employee);
-	
-	Employee dtoToEmployee(EmployeeDto employeeDto);
-	
-//	@Mapping(target = "employees", ignore = true)
-//	@Named("summary")
-//	PositionDto positionToSummaryDto(Position position);
 
 	Position dtoToPosition(PositionDto positionDto);
-	
-	List<Position> dtosToPositions(List<PositionDto> positions);
+
+	@Mapping(target = "position", ignore = true)
+	EmployeeDto employeeToDto(Employee employee);
 
 }
