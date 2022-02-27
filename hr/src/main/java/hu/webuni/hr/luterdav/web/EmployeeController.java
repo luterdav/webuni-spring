@@ -76,7 +76,7 @@ public class EmployeeController {
 	@GetMapping("/position")
 	public List<EmployeeDto> getByTitle(@RequestParam(required = false) String name) {
 		if (name != null)
-			return employeeMapper.employeesToDtos(employeeRepository.findByPosition(name));
+			return employeeMapper.employeesToDtos(employeeRepository.findByPositionName(name));
 		else
 			return employeeMapper.employeesToDtos(employeeService.findAll());
 	}
