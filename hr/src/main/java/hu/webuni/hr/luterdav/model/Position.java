@@ -23,20 +23,22 @@ public class Position {
 	private String name;
 	@Nullable
 	private String education;
-	private double minSalary;
-//	@ManyToMany(mappedBy = "positions")
-//	List<Company> companies;
+	
+	@OneToMany(mappedBy = "position")
+	private List<Employee> employees;
 	
 	public Position() {
 	}
 
-	public Position(long id, String name, String education, double minSalary) {
-	super();
-	this.id = id;
-	this.name = name;
-	this.education = education;
-	this.minSalary = minSalary;
-}
+
+	public Position(long id, String name, String education, List<Employee> employees) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.education = education;
+		this.employees = employees;
+	}
+
 
 	public long getId() {
 		return id;
@@ -56,14 +58,16 @@ public class Position {
 	public void setEducation(String education) {
 		this.education = education;
 	}
-	public double getMinSalary() {
-		return minSalary;
+
+
+	public List<Employee> getEmployees() {
+		return employees;
 	}
-	public void setMinSalary(double minSalary) {
-		this.minSalary = minSalary;
+
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
 	}
-	
-	
 	
 
 }
