@@ -25,37 +25,38 @@ public class Company {
 	private int registrationNumber;
 	private String name;
 	private String address;
-	@ElementCollection
-	@CollectionTable(name="type")
-	private Set<CompanyType> companyType;
+
+	@ManyToOne
+	private CompanyType companyType;
+	
 	@OneToMany(mappedBy = "company")
 	private List<Employee> employees;
-//	@ManyToMany
-//    @JoinTable(name="company_position")
-//	private List<Position> positions;
+
 	
 	public Company() {
 		
 	}
 
-	public Company(long id, int registrationNumber, String name, String address, Set<CompanyType> companyType,
-		List<Employee> employees) {
-	super();
-	this.id = id;
-	this.registrationNumber = registrationNumber;
-	this.name = name;
-	this.address = address;
-	this.companyType = companyType;
-	this.employees = employees;
-}
+	public Company(long id, int registrationNumber, String name, String address, CompanyType companyType,
+			List<Employee> employees) {
+		super();
+		this.id = id;
+		this.registrationNumber = registrationNumber;
+		this.name = name;
+		this.address = address;
+		this.companyType = companyType;
+		this.employees = employees;
+	}
 
-	public Set<CompanyType> getCompanyType() {
+	public CompanyType getCompanyType() {
 		return companyType;
 	}
 
-	public void setCompanyType(Set<CompanyType> companyType) {
+	public void setCompanyType(CompanyType companyType) {
 		this.companyType = companyType;
 	}
+
+
 
 	public int getRegistrationNumber() {
 		return registrationNumber;
