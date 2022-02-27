@@ -13,31 +13,34 @@ public class CompanyDto {
 	private int registrationNumber;
 	private String name;
 	private String address;
-	private Set<CompanyType> companyType;
+	private CompanyType companyType;
 	private List<EmployeeDto> employees = new ArrayList<>();
-//	private List<PositionDto> positions = new ArrayList<>();
 	
 	public CompanyDto() {
 	}
 
-	public CompanyDto(long id, int registrationNumber, String name, String address, Set<CompanyType> companyType,
-		List<EmployeeDto> employees) {
-	super();
-	this.id = id;
-	this.registrationNumber = registrationNumber;
-	this.name = name;
-	this.address = address;
-	this.companyType = companyType;
-	this.employees = employees;
-}
 
-	public Set<CompanyType> getCompanyType() {
+	public CompanyDto(long id, int registrationNumber, String name, String address, CompanyType companyType,
+			List<EmployeeDto> employees) {
+		super();
+		this.id = id;
+		this.registrationNumber = registrationNumber;
+		this.name = name;
+		this.address = address;
+		this.companyType = companyType;
+		this.employees = employees;
+	}
+
+
+	public CompanyType getCompanyType() {
 		return companyType;
 	}
 
-	public void setCompanyType(Set<CompanyType> companyType) {
+
+	public void setCompanyType(CompanyType companyType) {
 		this.companyType = companyType;
 	}
+
 
 	public long getId() {
 		return id;
@@ -78,7 +81,6 @@ public class CompanyDto {
 	public void setEmployees(List<EmployeeDto> employees) {
 		this.employees = employees;
 	}
-	
 	
 	
 	
