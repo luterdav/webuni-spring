@@ -63,24 +63,10 @@ public class PositionController {
 
 	}
 
-	@PostMapping("/{name}")
-	public PositionDto increaseSalary(@PathVariable String name, @RequestParam(name = "salary") Integer newMinSalary) {
-		Position position = positionService.increaseMinSalary(name, newMinSalary);
-		try {
-			return positionMapper.positionToDto(position);
-		} catch (NoSuchElementException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}
-	}
 	
-	@PostMapping("/{id}/{name}")
-	public CompanyDto increaseSalaryByCompany(@PathVariable long id, @PathVariable String name, @RequestParam(name = "salary") Integer newMinSalary) {
-		Company company = positionService.increaseMinSalaryByCompany(id, name, newMinSalary);
-		try {
-			return companyMapper.companyToDto(company);
-		} catch (NoSuchElementException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}
+	@PutMapping("/{companyId}/{positionName}/raiseMin/{minSalary}")
+	public void raiseMinSalary(@PathVariable long companyId, @PathVariable String positionName, @PathVariable int minSalary) {
+		positionService.increaseMinSalary(companyId, positionName, minSalary);
 	}
 
 
