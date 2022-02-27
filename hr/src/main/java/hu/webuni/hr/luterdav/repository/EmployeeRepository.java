@@ -15,7 +15,7 @@ import hu.webuni.hr.luterdav.model.Employee;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 	
-	List<Employee> findByPosition(String position);
+	List<Employee> findByPositionName(String position);
 	
 	List<Employee> findByNameStartingWithIgnoreCase(String name);
 	
@@ -25,8 +25,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 	
 	List<Employee> findBySalaryGreaterThan(Double salary, Pageable pageable);
 
-	@Query(value = "SELECT p.name AS positionName, AVG(e.salary) AS averageSalary FROM Employee e JOIN Position p on p.id = e.position_id WHERE e.company_id = ?1 GROUP BY p.name ORDER BY averageSalary DESC", nativeQuery = true)
-	List<Object[]> findAverageEmployeeSalary(Long company_id);
 
 	
 }
