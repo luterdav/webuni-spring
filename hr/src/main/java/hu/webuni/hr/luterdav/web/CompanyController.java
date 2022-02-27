@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +27,10 @@ import hu.webuni.hr.luterdav.dto.EmployeeDto;
 import hu.webuni.hr.luterdav.dto.View.BaseData;
 import hu.webuni.hr.luterdav.mapper.CompanyMapper;
 import hu.webuni.hr.luterdav.mapper.EmployeeMapper;
-import hu.webuni.hr.luterdav.model.AverageSalary;
+import hu.webuni.hr.luterdav.model.AverageSalaryByPosition;
 import hu.webuni.hr.luterdav.model.Company;
 import hu.webuni.hr.luterdav.model.Employee;
+import hu.webuni.hr.luterdav.repository.CompanyRepository;
 import hu.webuni.hr.luterdav.service.CompanyService;
 import hu.webuni.hr.luterdav.service.PositionService;
 
@@ -36,6 +40,8 @@ public class CompanyController {
 
 	@Autowired
 	private CompanyService companyService;
+	@Autowired
+	private CompanyRepository companyRepository;
 	@Autowired
 	private CompanyMapper companyMapper;
 	@Autowired
@@ -69,37 +75,35 @@ public class CompanyController {
 			return companyMapper.companyToSummaryDto(company);
 	}
 	
-	@GetMapping("/test1")
-	public List<CompanyDto> getCompaniesBySalary(@RequestParam(required = false) Double salary) {
-		if (salary != null) {
-			return companyMapper.companiesToDtos(companyService.findCompaniesBySalary(salary));
-		}else {
-			return companyMapper.companiesToDtos(companyService.findAll());
+	@GetMapping(params = "aboveSalary")
+	public List<CompanyDto> getCompaniesBySalary(@RequestParam(required = false) int aboveSalary,
+			@RequestParam(required = false) Boolean full, @SortDefault("id") Pageable pageable) {
+		Page<Company> page = companyRepository.findByEmployeeWithSalaryHigherThan(pageable, aboveSalary);
+		System.out.println(page.getTotalElements());
+		System.out.println(page.isLast());
+		List<Company> companies = page.getContent();
+		return mapCompanies(companies, full);
+	}
+	
+	private List<CompanyDto> mapCompanies(List<Company> allCompanies, Boolean full) {
+		if (isFull(full)) {
+			return companyMapper.companiesToDtos(allCompanies);
+		} else {
+			return companyMapper.companiesToSummaryDtos(allCompanies);
 		}
 	}
 	
-	@GetMapping("/test2")
-	public List<CompanyDto> getCompaniesByEmployeeLimit(@RequestParam(required = false) Integer limit) {
-		if (limit != null) {
-			return companyMapper.companiesToDtos(companyService.findCompaniesByEmployeeLimit(limit));
-		}else {
-			return companyMapper.companiesToDtos(companyService.findAll());
-		}
+	@GetMapping(params = "aboveEmployeeNumber")
+	public List<CompanyDto> getCompaniesAboveEmployeeNumber(@RequestParam int aboveEmployeeNumber,
+			@RequestParam(required = false) Boolean full) {
+		List<Company> filteredCompanies = companyRepository.findByEmployeeCountHigherThan(aboveEmployeeNumber);
+		return mapCompanies(filteredCompanies, full);
 	}
 	
-	@GetMapping("/{id}/averageSalary")
-	public List<AverageSalary> getAverageEmployeeSalary(@PathVariable long id) {
-		List<AverageSalary> employees = new ArrayList<>();
-		List<Object[]> averageSalaries = companyService.findAverageEmployeeSalaryByCompany(id);
-		
-		averageSalaries.forEach(a -> {
-			AverageSalary e = new AverageSalary();
-			e.setPositionName(a[0]+"");
-			e.setAverageSalary((double)a[1]);
-			employees.add(e);
-		});
-		
-		return employees;
+	@GetMapping("/{id}/salaryStats")
+	public List<AverageSalaryByPosition> getSalaryStatsById(@PathVariable long id,
+			@RequestParam(required = false) Boolean full) {
+		return companyRepository.findAverageSalariesByPosition(id);
 	}
 
 	@PostMapping
