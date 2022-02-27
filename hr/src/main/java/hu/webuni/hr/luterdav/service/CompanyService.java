@@ -77,26 +77,6 @@ public class CompanyService {
 		return company;
 	}
 	
-	public List<Company> findCompaniesBySalary(Double salary){
-		//List<Company> companies = new ArrayList<>();
-		List<Employee> employees = employeeRepository.findBySalaryGreaterThan(salary);
-		//employees.forEach(e -> companies.add(e.getCompany()));
-		
-		return employees.stream().map(e -> e.getCompany()).distinct().collect(Collectors.toList());
-	}
-	
-	public List<Company> findCompaniesByEmployeeLimit(Integer limit){
-		List<Company> companies = companyRepository.findAll();
-		
-		return companies.stream().filter(c -> c.getEmployees().size() > limit).collect(Collectors.toList());
-	}
-	
-	public List<Object[]> findAverageEmployeeSalaryByCompany(long id){
-		
-		return employeeRepository.findAverageEmployeeSalary(id);
-		
-	}
-	
 	
 }
 	
