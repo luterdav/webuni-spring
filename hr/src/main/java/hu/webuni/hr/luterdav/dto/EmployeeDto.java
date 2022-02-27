@@ -22,20 +22,33 @@ public class EmployeeDto {
 	private long id;
 	@NotEmpty
 	private String name;
-	@JsonView(BaseData.class)
-	private PositionDto position;
+	@NotEmpty
+	private String position;
 	@Positive
-	@JsonView(BaseData.class)
-	private double salary;
+	private int salary;
 	@Past
 	private LocalDateTime workStarted;
 	
 	private CompanyDto company;
-
+	
 	public EmployeeDto() {
 	}
+	
+	
 
-	public EmployeeDto(long id, @NotEmpty String name, PositionDto position, @Positive double salary,
+	public EmployeeDto(long id, @NotEmpty String name, String position, @Positive int salary,
+			@Past LocalDateTime workStarted) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.position = position;
+		this.salary = salary;
+		this.workStarted = workStarted;
+	}
+
+
+
+	public EmployeeDto(long id, @NotEmpty String name, String position, @Positive int salary,
 			@Past LocalDateTime workStarted, CompanyDto company) {
 		super();
 		this.id = id;
@@ -46,21 +59,7 @@ public class EmployeeDto {
 		this.company = company;
 	}
 
-	public PositionDto getPosition() {
-		return position;
-	}
 
-	public void setPosition(PositionDto position) {
-		this.position = position;
-	}
-
-	public CompanyDto getCompany() {
-		return company;
-	}
-	
-	public void setCompany(CompanyDto company) {
-		this.company = company;
-	}
 	public long getId() {
 		return id;
 	}
@@ -77,11 +76,19 @@ public class EmployeeDto {
 		this.name = name;
 	}
 
-	public double getSalary() {
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
+	public int getSalary() {
 		return salary;
 	}
 
-	public void setSalary(double salary) {
+	public void setSalary(int salary) {
 		this.salary = salary;
 	}
 
@@ -92,7 +99,15 @@ public class EmployeeDto {
 	public void setWorkStarted(LocalDateTime workStarted) {
 		this.workStarted = workStarted;
 	}
-	
+
+	public CompanyDto getCompany() {
+		return company;
+	}
+
+	public void setCompany(CompanyDto company) {
+		this.company = company;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", name=" + name + ", title=" + position + ", salary=" + salary + ", workStarted="
