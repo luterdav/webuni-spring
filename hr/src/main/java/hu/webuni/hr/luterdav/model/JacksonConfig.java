@@ -28,6 +28,6 @@ public class JacksonConfig {
 			// dátum/idő formátum testreszabásához
 			builder.deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(dateFormat)));
 			builder.deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
-		};
+		};//
 	}
 }
